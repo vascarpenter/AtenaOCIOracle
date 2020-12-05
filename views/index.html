@@ -1,0 +1,72 @@
+{{define "index"}}
+{{template "header_jquery" .}}
+	
+
+<p>{{.Title}}</p>
+<div id="portal-header">
+  <span class="login-user">{{.UserName}}さんとしてログインしています</span>&nbsp;
+  <button type="button" onclick="location.href='/logout'">ログアウト</button>&nbsp;
+  <button type="button" onclick="location.href='/resetpass'">パスワードの変更</button>
+</div>
+
+<script>
+  $(function() {
+      $('input:checkbox').change(function() {
+          var cnt = $('input[name^="chk"]:checked').length;
+          $('div.checkedcounter').text('選択：' + cnt + '件');
+      }).trigger('change');
+  });
+  </script>
+
+<div class="checkedcounter"></div>
+
+
+<form name="addrlist" action="/" method="POST">  
+<font size=+1><button name="confirm">選択/送受を確定</button>  </font>
+確定せずにソートをすると選択が消えます<br/>
+
+<br/>
+<table border="1" cellspacing="0" cellpadding="5"  bordercolor="#333333">
+<tr>
+  <th><a href="/listby/2">選択</a></th>
+  <th><a href="/listby/1">名前</a></th>
+  <th>連名</th>
+  <th>住所</th>
+  <th>今年</th>
+  <th>去年</th>
+  <th>PHONE</th>
+  <th>EMAIL</th>
+  <th>MEMO</th>
+</tr>
+  {{range $n,$i := .Iconids}}
+    <tr>
+      <td><input type="checkbox" name="chk{{$i.RowNum}}" value="1" {{if ne $i.Selected 0}}checked="checked"{{end}}/></td>
+      <td>
+        <font size=-2>{{$i.Furilastname}}
+          &nbsp;{{$i.Furifirstname}}</font>
+          <br>
+        {{$i.Lastname}}&nbsp;{{$i.Firstname}}
+        &nbsp;{{$i.Suffix}}
+      </td>
+      <td>{{$i.Namesoffamily1}}&nbsp;{{$i.Suffix1}}
+        &nbsp;{{$i.Namesoffamily2}}&nbsp;{{$i.Suffix2}}
+        &nbsp;{{$i.Namesoffamily3}}&nbsp;{{$i.Suffix3}}</td>
+      <td>〒{{$i.Addresscode}}
+        &nbsp;
+        {{$i.Fulladdress}}</td>
+      <td>{{$i.ThisYear|safehtml}}
+      </td>
+      <td>{{$i.LastYear|safehtml}}
+      </td>
+      <td><font size=-2>{{$i.Phoneitem}}</font></td>
+      <td><font size=-2>{{$i.Emailitem}}</font></td>
+      <td>{{$i.Memo}}</td>
+  </tr>
+{{end}}
+</table></form>
+
+<br><br>
+
+
+{{template "footer"}}
+{{end}}

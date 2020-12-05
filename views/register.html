@@ -1,0 +1,20 @@
+{{define "register"}}
+{{template "header" .}}
+<div id="register">
+    <p class="main-title">{{.Title}}</p>
+    <form action="/register" method="post" class="board-form">
+        <span class="label">ユーザー名</span><input type="text" name="username" class="input" required><br>
+        <br>
+        <span class="label">Eメール</span><input type="email" name="mailaddress" class="input" required><br>
+        <br>
+        <span class="label">パスワード</span><input type="password" name="userpass" class="input" required><br>
+        <br>
+        <button type="submit" class="submit">新規ユーザー登録</button><br><br>
+        <button type="button" name="register" class="submit" onclick="location.href='/login'">ログイン画面に戻る</button>
+    </form>
+    {{if ne .EmailExists ""}}
+        <p class="error">{{.EmailExists}}</p>
+    {{end}}
+</div>
+{{template "footer"}}
+{{end}}
